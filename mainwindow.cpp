@@ -11,23 +11,33 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     viz=new Visualizer(this);
     musicPaths = new QStringListModel(this);
+    listView = new QListView(this);
+    treeView = new QTreeView(this);
+    widget = new QWidget(this);
+    ui->gridLayout->addWidget(widget);
+    widget->setLayout(new QVBoxLayout());
+    widget->layout()->addWidget(listView);
+    widget->layout()->addWidget(treeView);
     QStringList androidPaths =QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
     androidPaths.append("/storage/sdcard1/Music/");
     musicPaths->setStringList(androidPaths);
-    ui->listView->setModel(musicPaths);
+    listView->setModel(musicPaths);
     fsmodel = new QFileSystemModel(this);
     fsmodel->setFilter(QDir::Files);
     fsmodel->setRootPath(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0));
-    ui->treeView->setModel(fsmodel);
-    ui->treeView->setRootIndex(fsmodel->index(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0)));
+    treeView->setModel(fsmodel);
+    treeView->setRootIndex(fsmodel->index(QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0)));
     ui->gridLayout_3->addWidget(viz);
-    ui->widget->hide();
+    widget->hide();
     player = new QMediaPlayer(this);
     ui->toolBar->setIconSize(QSize(48,48));
     ui->horizontalSlider->setTracking(false);
     connect(player,SIGNAL(positionChanged(qint64)),this,SLOT(positionChanged(qint64)));
     connect(player,SIGNAL(durationChanged(qint64)),this,SLOT(durationChanged(qint64)));
     connect(ui->horizontalSlider,SIGNAL(sliderMoved(int)),this,SLOT(seek(int)));
+    connect(listView,SIGNAL(clicked(QModelIndex)),this,SLOT(listView_clicked(QModelIndex)));
+    connect(treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(treeView_clicked(QModelIndex)));
+    connect(player,SIGNAL(positionChanged(qint64)),this,SLOT(timeDisplayUpdate(qint64)));
 
     /*
     qDebug()<< QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0);
@@ -95,41 +105,57 @@ void MainWindow::positionChanged(qint64 position)
 void MainWindow::durationChanged(qint64 duration)
 {
     int sec_duration = duration/1000;
-    ui->horizontalSlider->setRange(0,sec_duration);
+    ui->horizontalSlider->setMaximum(sec_duration);
 }
 
 void MainWindow::seek(int position)
 {
     player->setPosition(position*1000);
 }
-
-void MainWindow::on_actionScan_triggered()
-{
-
-
-}
-
 void MainWindow::on_actionPlayList_triggered()
 {
-   if(!ui->widget->isVisible())
-    ui->widget->show();
+   if(!widget->isVisible())
+    widget->showMaximized();
    else
-       ui->widget->hide();
+       widget->hide();
 }
 
-void MainWindow::on_treeView_clicked(const QModelIndex &index)
+void MainWindow::treeView_clicked(const QModelIndex &index)
 {
     player->setMedia(QMediaContent(QUrl::fromLocalFile(fsmodel->filePath(index))));
     player->play();
 }
 
-void MainWindow::on_listView_clicked(const QModelIndex &index)
+void MainWindow::listView_clicked(const QModelIndex &index)
 {
 
     fsmodel->setRootPath(musicPaths->data(index,Qt::DisplayRole).toString());
-    ui->treeView->setModel(fsmodel);
-    ui->treeView->setRootIndex(fsmodel->index(musicPaths->data(index,Qt::DisplayRole).toString()));
-    ui->treeView->hideColumn(1);
-    ui->treeView->hideColumn(2);
-    ui->treeView->hideColumn(3);
+    treeView->setModel(fsmodel);
+    treeView->setRootIndex(fsmodel->index(musicPaths->data(index,Qt::DisplayRole).toString()));
+    treeView->hideColumn(1);
+    treeView->hideColumn(2);
+    treeView->hideColumn(3);
+}
+
+void MainWindow::timeDisplayUpdate(qint64 time)
+{
+    qint64 hour,min,sec,dispsec,dmin;
+        hour=min=dmin=0;
+        sec=time/1000;
+            dispsec=sec;
+            if(sec>59)
+            {
+                min=sec/60;
+                dispsec=sec%60;
+                dmin=min;
+
+            }
+            if(min>59)
+            {
+                hour=min/60;
+                dmin=min%60;
+            }
+    ui->hourlabel->setText(QString::number(hour));
+    ui->minlabel->setText(QString::number(dmin));
+    ui->seclabel->setText(QString::number(dispsec));
 }

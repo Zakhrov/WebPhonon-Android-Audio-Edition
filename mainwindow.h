@@ -7,6 +7,9 @@
 #include <QMediaPlayer>
 #include <QFileSystemModel>
 #include <QStringListModel>
+#include <QListView>
+#include <QTreeView>
+#include <QWidget>
 namespace Ui {
 class MainWindow;
 }
@@ -37,13 +40,13 @@ private slots:
     void durationChanged(qint64 duration);
     void seek(int position);
 
-    void on_actionScan_triggered();
 
     void on_actionPlayList_triggered();
 
-    void on_treeView_clicked(const QModelIndex &index);
+    void treeView_clicked(const QModelIndex &index);
 
-    void on_listView_clicked(const QModelIndex &index);
+    void listView_clicked(const QModelIndex &index);
+    void timeDisplayUpdate(qint64 time);
 
 private:
     Ui::MainWindow *ui;
@@ -51,6 +54,9 @@ private:
     QMediaPlayer *player;
     QFileSystemModel *fsmodel;
     QStringListModel *musicPaths;
+    QListView *listView;
+    QTreeView *treeView;
+    QWidget *widget;
 
 
 };

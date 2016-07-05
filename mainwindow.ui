@@ -14,16 +14,19 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMaximumSize</enum>
-        </property>
-       </layout>
-      </item>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QGridLayout" name="gridLayout"/>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMaximumSize</enum>
+      </property>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QSlider" name="horizontalSlider">
         <property name="sizePolicy">
@@ -35,24 +38,80 @@
         <property name="styleSheet">
          <string notr="true"/>
         </property>
+        <property name="tracking">
+         <bool>false</bool>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLabel" name="hourlabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>HH</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="minlabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>MM</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="seclabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>SS</string>
+        </property>
+       </widget>
+      </item>
      </layout>
-    </item>
-    <item row="0" column="1">
-     <widget class="QWidget" name="widget" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QListView" name="listView"/>
-       </item>
-       <item>
-        <widget class="QTreeView" name="treeView"/>
-       </item>
-      </layout>
-     </widget>
     </item>
    </layout>
   </widget>
@@ -70,7 +129,6 @@
      <string>Optio&amp;ns</string>
     </property>
     <addaction name="actionOpen"/>
-    <addaction name="actionScan"/>
     <addaction name="actionPlayList"/>
     <addaction name="actionPlay"/>
     <addaction name="actionPause"/>
@@ -159,17 +217,12 @@
      <normaloff>:/media-playback-stop.png</normaloff>:/media-playback-stop.png</iconset>
    </property>
    <property name="text">
-    <string>St&amp;op</string>
-   </property>
-  </action>
-  <action name="actionScan">
-   <property name="text">
-    <string>&amp;Scan</string>
+    <string>Sto&amp;p</string>
    </property>
   </action>
   <action name="actionPlayList">
    <property name="text">
-    <string>&amp;PlayList</string>
+    <string>&amp;Show/Hide PlayList</string>
    </property>
   </action>
  </widget>
