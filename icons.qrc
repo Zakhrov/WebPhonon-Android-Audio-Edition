@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/splash">
+        <file>WebPhonon-Master-text2.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>application-exit.png</file>
+        <file>document-open.png</file>
+        <file>media-playback-pause.png</file>
+        <file>media-playback-start.png</file>
+        <file>media-playback-stop.png</file>
+        <file>media-skip-backward.png</file>
+        <file>media-skip-forward.png</file>
+    </qresource>
+</RCC>
