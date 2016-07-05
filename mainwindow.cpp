@@ -4,7 +4,6 @@
 #include <QDirIterator>
 #include <QStandardPaths>
 #include <QFileSystemModel>
-#include <QAndroidJniObject>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -29,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(player,SIGNAL(positionChanged(qint64)),this,SLOT(positionChanged(qint64)));
     connect(player,SIGNAL(durationChanged(qint64)),this,SLOT(durationChanged(qint64)));
     connect(ui->horizontalSlider,SIGNAL(sliderMoved(int)),this,SLOT(seek(int)));
-
 
     /*
     qDebug()<< QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0);
@@ -131,4 +129,7 @@ void MainWindow::on_listView_clicked(const QModelIndex &index)
     fsmodel->setRootPath(musicPaths->data(index,Qt::DisplayRole).toString());
     ui->treeView->setModel(fsmodel);
     ui->treeView->setRootIndex(fsmodel->index(musicPaths->data(index,Qt::DisplayRole).toString()));
+    ui->treeView->hideColumn(1);
+    ui->treeView->hideColumn(2);
+    ui->treeView->hideColumn(3);
 }
