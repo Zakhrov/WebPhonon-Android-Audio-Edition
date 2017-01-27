@@ -7,6 +7,9 @@
 QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
+android{
+QT += purchasing
+}
 
 TARGET = WebPhonon-Android-Audio-edition
 TEMPLATE = app

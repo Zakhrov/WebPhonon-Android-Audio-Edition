@@ -4,6 +4,9 @@
 #include <QDirIterator>
 #include <QStandardPaths>
 #include <QFileSystemModel>
+#ifdef Q_OS_ANDROID
+#include <QtPurchasing>
+#endif
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -38,13 +41,22 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(listView,SIGNAL(clicked(QModelIndex)),this,SLOT(listView_clicked(QModelIndex)));
     connect(treeView,SIGNAL(clicked(QModelIndex)),this,SLOT(treeView_clicked(QModelIndex)));
     connect(player,SIGNAL(positionChanged(qint64)),this,SLOT(timeDisplayUpdate(qint64)));
+#ifdef Q_OS_ANDROID
+    /* In App purchase framework */
+    myStore = new QInAppStore(this);
+    connect(myStore,SIGNAL(productRegistered(QInAppProduct*)),this,SLOT(markProductAvailable(QInAppProduct*)));
+    connect(myStore, SIGNAL(productUnknown(QInAppProduct*)),
+                this, SLOT(handleErrorGracefully(QInAppProduct*)));
 
+        connect(myStore, SIGNAL(transactionReady(QInAppTransaction*)),
+                this, SLOT(handleTransaction(QInAppTransaction*)));
+    myStore->registerProduct(QInAppProduct::Consumable,QStringLiteral("tier1"));
     /*
     qDebug()<< QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0);
     while (it.hasNext())
         qDebug() << it.next();
     */
-
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -158,4 +170,9 @@ void MainWindow::timeDisplayUpdate(qint64 time)
     ui->hourlabel->setText(QString::number(hour));
     ui->minlabel->setText(QString::number(dmin));
     ui->seclabel->setText(QString::number(dispsec));
+}
+
+void MainWindow::on_actionContribute_triggered()
+{
+
 }

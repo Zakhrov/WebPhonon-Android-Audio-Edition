@@ -48,6 +48,8 @@ private slots:
     void listView_clicked(const QModelIndex &index);
     void timeDisplayUpdate(qint64 time);
 
+    void on_actionContribute_triggered();
+
 private:
     Ui::MainWindow *ui;
     Visualizer *viz;
@@ -57,7 +59,9 @@ private:
     QListView *listView;
     QTreeView *treeView;
     QWidget *widget;
-
+#ifdef Q_OS_ANDROID
+    QInAppStore *myStore;
+#endif
 
 };
 

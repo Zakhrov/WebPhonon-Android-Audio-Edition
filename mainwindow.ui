@@ -130,6 +130,7 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionPlayList"/>
+    <addaction name="actionContribute"/>
     <addaction name="actionPlay"/>
     <addaction name="actionPause"/>
     <addaction name="actionSkip_Foward"/>
@@ -223,6 +224,11 @@
   <action name="actionPlayList">
    <property name="text">
     <string>&amp;Show/Hide PlayList</string>
+   </property>
+  </action>
+  <action name="actionContribute">
+   <property name="text">
+    <string>contribute</string>
    </property>
   </action>
  </widget>
