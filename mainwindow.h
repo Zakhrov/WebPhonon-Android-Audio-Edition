@@ -10,6 +10,7 @@
 #include <QListView>
 #include <QTreeView>
 #include <QWidget>
+#include <QtPurchasing>
 namespace Ui {
 class MainWindow;
 }
@@ -49,6 +50,9 @@ private slots:
     void timeDisplayUpdate(qint64 time);
 
     void on_actionContribute_triggered();
+    void handleTransaction(QInAppTransaction *transaction);
+    void markProductAvailable(QInAppProduct *product);
+    void handleErrorGracefully(QInAppProduct *product);
 
 private:
     Ui::MainWindow *ui;

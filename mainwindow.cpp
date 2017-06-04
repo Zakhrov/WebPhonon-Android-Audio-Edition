@@ -4,6 +4,7 @@
 #include <QDirIterator>
 #include <QStandardPaths>
 #include <QFileSystemModel>
+#include <QMessageBox>
 #ifdef Q_OS_ANDROID
 #include <QtPurchasing>
 #endif
@@ -50,7 +51,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
         connect(myStore, SIGNAL(transactionReady(QInAppTransaction*)),
                 this, SLOT(handleTransaction(QInAppTransaction*)));
-    myStore->registerProduct(QInAppProduct::Consumable,QStringLiteral("tier1"));
+        myStore->registerProduct(QInAppProduct::Consumable,QStringLiteral("tier1"));
+
+
     /*
     qDebug()<< QStandardPaths::standardLocations(QStandardPaths::MusicLocation).at(0);
     while (it.hasNext())
@@ -174,5 +177,34 @@ void MainWindow::timeDisplayUpdate(qint64 time)
 
 void MainWindow::on_actionContribute_triggered()
 {
-
+    QInAppProduct *tier1 = myStore->registeredProduct(QStringLiteral("tier1"));
+    tier1->purchase();
 }
+
+void MainWindow::handleTransaction(QInAppTransaction *transaction)
+{
+    if (transaction->status() == QInAppTransaction::PurchaseApproved
+            && transaction->product()->identifier() == QStringLiteral("tier1")) {
+           transaction->finalize();
+        } else if (transaction->status() == QInAppTransaction::PurchaseFailed) {
+            QMessageBox error;
+            error.setText("Purchase failed");
+            error.exec();
+            transaction->finalize();
+    }
+}
+
+void MainWindow::markProductAvailable(QInAppProduct *product)
+{
+    if(product == myStore->registeredProduct(QStringLiteral("tier1"))){
+
+        qDebug() << product->title()+" registered";
+    }
+}
+
+void MainWindow::handleErrorGracefully(QInAppProduct *product)
+{
+
+    qDebug() << product->title()+ "failed to work";
+}
+
